@@ -1,6 +1,26 @@
+import React from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import Button from 'remoteApp/Button';
+
+// Some dummy thing
+export const DummyButton = React.lazy(() => import('remoteApp/Button'))
+
+const RemoteButton = React.lazy(
+  // Normal way of loading things
+  // @ts-ignore
+  // import("remote_app/Button")
+
+  // Use new loader
+  () => {
+    remotesMap['myDynamicRemote'] = {
+      url: 'http://localhost:3001/assets/remoteEntry.js',
+      format: 'esm'
+    }
+
+    return __federation_method_ensure('myDynamicRemote')
+      .then((remote) => remote.get('./Button').then((factory) => factory()))
+  }
+)
 
 function App() {
   return (
@@ -15,7 +35,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <Button />
+        <RemoteButton />
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>

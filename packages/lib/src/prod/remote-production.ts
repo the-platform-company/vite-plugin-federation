@@ -84,6 +84,9 @@ export function prodRemotePlugin(
 
                 const initMap = Object.create(null);
 
+                window.remotesMap = remotesMap;
+                window.__federation_method_ensure = __federation_method_ensure;
+
                 async function __federation_method_ensure(remoteId) {
                     const remote = remotesMap[remoteId];
                     if (!remote.inited) {
