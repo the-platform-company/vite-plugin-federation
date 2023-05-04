@@ -226,6 +226,11 @@ Required as the module name of the remote module.
 
 ### `filename:string`
 As the entry file of the remote module, not required, default is `remoteEntry.js`
+
+### `transformFileTypes:string[]`
+* In most cases, the file types that the plug-in needs to process do not need to be configured, because these types are set by default.['.js', '.ts', '.jsx', '.tsx', '.mjs', '.cjs', '.vue', '.svelte'],When you customize some file types and need the `vite-plugin-federation` plugin processing, please add it to the array configuration.
+
+
 ### `exposes`
 * As the remote module, the list of components exposed to the public, required for the remote module.
 ```js
@@ -304,7 +309,7 @@ Dependencies shared by local and remote modules. Local modules need to configure
 #### `shareScope: string`
 
 * `default: 'default'`
-* Default is `defualt`, the shared domain name, just keep the `remote` and `host` sides the same
+* Default is `default`, the shared domain name, just keep the `remote` and `host` sides the same
 
 #### `version: string`
 Only works on `host` side, the version of the shared module provided is `version` of the `package.json` file in the shared package by default, you need to configure it manually only if you can't get `version` by this method

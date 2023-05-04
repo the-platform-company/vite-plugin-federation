@@ -204,18 +204,9 @@ export function prodRemotePlugin(
       if (builderInfo.isRemote) {
         for (const expose of parsedOptions.prodExpose) {
           if (!expose[1].emitFile) {
-            if (!expose[1].id) {
-              // resolved the moduleId here for the reference somewhere else like #152
-              expose[1].id = (await this.resolve(expose[1].import))?.id
-              if (!expose[1].id) {
-                this.error(
-                  `Cannot find file ${expose[1].import}, please check your 'exposes.import' config.`
-                )
-              }
-            }
             expose[1].emitFile = this.emitFile({
               type: 'chunk',
-              id: expose[1].id,
+              id: expose[1].id ?? expose[1].import,
               name: EXPOSES_KEY_MAP.get(expose[0]),
               preserveSignature: 'allow-extension'
             })
@@ -460,7 +451,10 @@ export function prodRemotePlugin(
         }
 
         if (requiresRuntime || hasImportShared || modify) {
-          return magicString.toString()
+          return {
+            code: magicString.toString(),
+            map: magicString.generateMap({ hires: true })
+          }
         }
       }
     }
