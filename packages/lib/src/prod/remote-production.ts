@@ -145,13 +145,17 @@ export function prodRemotePlugin(
                     remotesMap[remoteName] = remoteConfig;
                 }
 
-                export {
-                    __federation_method_ensure,
-                    __federation_method_getRemote,
-                    __federation_method_setRemote,
-                    __federation_method_unwrapDefault,
-                    __federation_method_wrapDefault
+                const __federation__ = { 
+                  __federation_method_ensure, 
+                  __federation_method_getRemote, 
+                  __federation_method_setRemote, 
+                  __federation_method_unwrapDefault , 
+                  __federation_method_wrapDefault 
                 }
+                
+                globalThis.__federation__ = __federation__
+                
+                export default __federation__
             `
     },
 
